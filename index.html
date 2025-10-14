@@ -5,11 +5,12 @@
   <title>Celebrate a Sale 🎉</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="favicon.png">
 
   <style>
     body {
       font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background: linear-gradient(135deg, #081216, #14232b, #1c2f3a);
       color: white;
       display: flex;
       flex-direction: column;
@@ -19,26 +20,55 @@
       padding: 20px;
     }
 
-    h1 {
-      margin-top: 20px;
-      font-size: 2.5rem;
+    /* Refined logo styling — tighter gold frame that fits perfectly */
+.logo {
+  width: 100px; /* slightly smaller to offset border/padding */
+  margin: 20px auto 10px auto;
+  cursor: pointer;
+  display: block;
+  border: 2px solid gold; /* thinner frame */
+  border-radius: 12px;
+  padding: 3px; /* reduced padding */
+  background: rgba(255, 215, 0, 0.05);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
+  transition: all 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.45);
+}
+/* Keep logo + text perfectly centered together */
+.intro-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* centers horizontally */
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+}
+
     }
 
-    .subtitle {
-      max-width: 600px;
+    .intro-text {
+      max-width: 400px;
       text-align: center;
-      font-size: 1rem;
-      opacity: 0.85;
-      margin-bottom: 20px;
+      font-size: 0.75rem;
+      color: white;
+      margin-bottom: 40px;
+      line-height: 1.3;
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(10px);
       border-radius: 15px;
       padding: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-      width: 350px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      width: 320px;
+      text-align: left;
     }
 
     label {
@@ -74,6 +104,12 @@
       font-weight: 600;
       font-size: 1.1rem;
       cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
     }
 
     .btn span {
@@ -95,61 +131,65 @@
       text-align: center;
     }
 
+    #openCelebration {
+      margin-top: 10px;
+    }
+
     /* Celebration page */
     #resultPage {
       display: none;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       text-align: center;
-      width: 100vw;
-      height: 100vh;
-      padding: 0;
-      margin: 0;
-      overflow: hidden;
+      width: 100%;
+      min-height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+      animation: fadeIn 1s ease;
     }
 
-    #celebrationTitle {
-      font-size: 2rem;
-      color: white;
-      animation: blinkTitle 1.5s infinite;
-      margin-bottom: 10px;
-    }
-
-    @keyframes blinkTitle {
-      0%, 100% { color: white; }
-      50% { color: #ff4b5c; }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     video {
-      width: 100%;
-      height: 70vh;
-      object-fit: cover;
+      width: 80%;
+      max-width: 900px;
+      height: auto;
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+
+    #celebrationTitle {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: gold;
+      margin-top: 15px;
     }
 
     #summaryText {
-      font-size: 1.2rem;
-      font-weight: bold;
+      font-size: 1.3rem;
+      font-weight: 500;
       margin-top: 10px;
-      color: white;
+      color: gold;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+      max-width: 80%;
+      line-height: 1.5;
       opacity: 0;
-      transform: translateY(10px);
-      animation: fadeInText 1.5s ease forwards;
-      animation-delay: 0.5s;
+      animation: fadeInText 2s ease forwards;
+      animation-delay: 1s;
     }
 
     @keyframes fadeInText {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     #toggleMusic {
       width: auto;
       padding: 10px 14px;
-      margin-top: 10px;
+      margin-top: 20px;
       border-radius: 8px;
       border: none;
       background: linear-gradient(to right, #ff5f6d, #ffc371);
@@ -157,15 +197,33 @@
       font-weight: 600;
       cursor: pointer;
     }
+/* ✅ Responsive alignment for intro text on all devices */
+@media (max-width: 600px) {
+  .intro-text {
+    font-size: 0.75rem;       /* smaller text on phones */
+    line-height: 1.3;         /* tighter spacing */
+    max-width: 90%;           /* fits neatly on small screens */
+    margin: 0 auto 20px auto; /* keeps centered */
+    text-align: center;       /* ensure perfect center alignment */
+  }
+
+  .logo {
+    width: 90px;              /* slightly smaller logo on mobile */
+  }
+}
+
   </style>
 </head>
 
 <body>
-  <h1>🎊 Celebrate a Sale 🎊</h1>
-  <div class="subtitle" id="subtitle">
+  <!-- Form Page -->
+ <div class="intro-container">
+  <img src="logo.png" alt="Celebrate a Sale Logo" class="logo" id="mainLogo">
+  <div class="intro-text">
     We want all salespeople to feel the love for an amazing deal. Even if you work remote.
     Generate a celebration-link and bomb your colleagues with your greatness.
   </div>
+</div>
 
   <div id="formPage" class="card">
     <label>👤 Salesperson:</label>
@@ -185,14 +243,17 @@
       <option value="huge">The Huge Whale</option>
     </select>
 
-    <button class="btn" onclick="generateLink()">🎉 Celebrate! 
+    <button class="btn" onclick="generateLink()">🎉 Celebrate!
       <span>(generate link + copy link)</span>
     </button>
 
     <input id="shareLink" type="text" readonly placeholder="Your link will appear here">
+    <button id="openCelebration" class="btn" onclick="openCelebration()">Open your celebration page</button>
   </div>
 
+  <!-- Celebration Page -->
   <div id="resultPage">
+    <a href="index.html"><img src="logo.png" alt="Celebrate a Sale Logo" class="logo"></a>
     <div id="celebrationTitle">Attention! Deal-alert 🚨</div>
     <video id="celebrationVideo" autoplay muted loop playsinline></video>
     <div id="summaryText"></div>
@@ -201,103 +262,108 @@
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script>
-    const formPage = document.getElementById("formPage");
-    const resultPage = document.getElementById("resultPage");
-    const subtitle = document.getElementById("subtitle");
-    const shareLink = document.getElementById("shareLink");
-    const videoEl = document.getElementById("celebrationVideo");
-    const summaryText = document.getElementById("summaryText");
-    let music = null;
+  const formPage = document.getElementById("formPage");
+  const resultPage = document.getElementById("resultPage");
+  const videoEl = document.getElementById("celebrationVideo");
+  const summaryText = document.getElementById("summaryText");
+  const shareLink = document.getElementById("shareLink");
+  const introText = document.querySelector(".intro-text");
+  const mainLogo = document.getElementById("mainLogo");
+  let music = null;
 
-    function generateLink() {
-      const salesperson = document.getElementById("salesperson").value.trim();
-      const customer = document.getElementById("customer").value.trim();
-      const amount = document.getElementById("amount").value.trim();
-      const dealSize = document.getElementById("dealSize").value;
+  function generateLink() {
+    const salesperson = document.getElementById("salesperson").value.trim();
+    const customer = document.getElementById("customer").value.trim();
+    const amount = document.getElementById("amount").value.trim();
+    const dealSize = document.getElementById("dealSize").value;
 
-      const params = new URLSearchParams({ salesperson, customer, amount, dealSize });
-      const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-      shareLink.value = url;
+    const params = new URLSearchParams({ salesperson, customer, amount, dealSize });
+    const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    shareLink.value = url;
 
-      // Automatically copy link
-      shareLink.select();
-      document.execCommand("copy");
-      alert("Link generated and copied!");
+    shareLink.select();
+    document.execCommand("copy");
+    alert("Link generated and copied!");
+  }
+
+  function openCelebration() {
+    const link = shareLink.value.trim();
+    if (link) window.open(link, "_blank");
+    else alert("Please generate a link first!");
+  }
+
+  function showCelebration(salesperson, customer, amount, dealSize) {
+    formPage.style.display = "none";
+    introText.style.display = "none";
+    mainLogo.style.display = "none"; // 👈 hides top logo
+    resultPage.style.display = "flex";
+
+    let videoFile = "";
+    let musicFile = "";
+    let dealWord = "";
+
+    if (dealSize === "small") {
+      videoFile = "small.mp4";
+      musicFile = "big.mp3";
+      dealWord = "nice";
+    } else if (dealSize === "big") {
+      videoFile = "big.mp4";
+      musicFile = "big.mp3";
+      dealWord = "big";
+    } else {
+      videoFile = "huge.mp4";
+      musicFile = "huge.mp3";
+      dealWord = "huge";
     }
 
-    function showCelebration(salesperson, customer, amount, dealSize) {
-      // Hide the form and subtitle
-      formPage.style.display = "none";
-      subtitle.style.display = "none";
+    videoEl.src = videoFile;
+    summaryText.textContent = `Our genius salesman ${salesperson} just closed a ${dealWord} deal with ${customer} worth ${amount}.`;
 
-      // Show result page fullscreen
-      resultPage.style.display = "flex";
+    if (music) {
+      music.pause();
+      music = null;
+    }
+    music = new Audio(musicFile);
+    music.loop = true;
+    music.volume = 0.6;
+    music.play().catch(() => {
+      document.body.addEventListener('click', () => music.play(), { once: true });
+    });
 
-      let videoFile = "";
-      let musicFile = "";
-      let dealWord = "";
-
-      if (dealSize === "small") {
-        videoFile = "small.mp4";
-        musicFile = "big.mp3";
-        dealWord = "nice";
-      } else if (dealSize === "big") {
-        videoFile = "big.mp4";
-        musicFile = "big.mp3";
-        dealWord = "big";
-      } else {
-        videoFile = "huge.mp4";
-        musicFile = "huge.mp3";
-        dealWord = "huge";
-      }
-
-      videoEl.src = videoFile;
-      summaryText.textContent = `Our genius salesman ${salesperson} just closed a ${dealWord} deal with ${customer} worth ${amount}.`;
-
-      // Music
-      if (music) {
-        music.pause();
-        music = null;
-      }
-      music = new Audio(musicFile);
-      music.loop = true;
-      music.volume = 0.6;
-      music.play().catch(() => {
-        document.body.addEventListener('click', () => music.play(), { once: true });
+    const end = Date.now() + 2500;
+    const confettiCount = dealSize === "huge" ? 30 : 60;
+    (function frame() {
+      const timeLeft = end - Date.now();
+      if (timeLeft <= 0) return;
+      confetti({
+        particleCount: confettiCount,
+        spread: 70,
+        origin: { x: Math.random(), y: Math.random() - 0.2 }
       });
+      requestAnimationFrame(frame);
+    })();
+  }
 
-      // Confetti
-      const end = Date.now() + 2500;
-      const confettiCount = dealSize === "huge" ? 30 : 60;
-      (function frame() {
-        const timeLeft = end - Date.now();
-        if (timeLeft <= 0) return;
-        confetti({
-          particleCount: confettiCount,
-          spread: 70,
-          origin: { x: Math.random(), y: Math.random() - 0.2 }
-        });
-        requestAnimationFrame(frame);
-      })();
+  function toggleMusic() {
+    if (!music) return;
+    if (music.paused) music.play();
+    else music.pause();
+  }
+
+  window.onload = () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has("salesperson")) {
+      showCelebration(
+        params.get("salesperson"),
+        params.get("customer"),
+        params.get("amount"),
+        params.get("dealSize")
+      );
     }
+  };
+</script>
 
-    function toggleMusic() {
-      if (!music) return;
-      if (music.paused) music.play();
-      else music.pause();
-    }
-
-    window.onload = () => {
-      const params = new URLSearchParams(window.location.search);
-      if (params.has("salesperson")) {
-        showCelebration(
-          params.get("salesperson"),
-          params.get("customer"),
-          params.get("amount"),
-          params.get("dealSize")
-        );
-      }
-    };
+    
   </script>
 </body>
 </html>
