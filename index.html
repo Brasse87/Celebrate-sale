@@ -3,6 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <title>Celebrate a Sale 🎉</title>
+<!-- 🎉 Social link preview -->
+<meta property="og:title" content="Celebrate a Sale 🎉">
+<meta property="og:description" content="A place where every win deserves a celebration. See who just closed a big deal!">
+<meta property="og:image" content="https://celebrateasale.com/preview.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://celebrateasale.com">
+
+<!-- Twitter (for X / LinkedIn / Slack support) -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Celebrate a Sale 🎉">
+<meta name="twitter:description" content="Celebrate your team's biggest wins with style.">
+<meta name="twitter:image" content="https://celebrateasale.com/preview.png">
+
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="favicon.png">
@@ -17,7 +30,8 @@
       align-items: center;
       margin: 0;
       min-height: 100vh;
-      padding: 20px;
+      padding: 60px;
+      padding-bottom: 100px;
     }
 
     /* Refined logo styling — tighter gold frame that fits perfectly */
@@ -57,7 +71,7 @@
       text-align: center;
       font-size: 0.75rem;
       color: white;
-      margin-bottom: 40px;
+      margin-bottom: 60px;
       line-height: 1.3;
     }
 
@@ -144,7 +158,7 @@
       text-align: center;
       width: 100%;
       min-height: 100vh;
-      padding: 20px;
+      padding: 10px 20px 40px 20px;
       box-sizing: border-box;
       animation: fadeIn 1s ease;
     }
@@ -211,6 +225,42 @@
     width: 90px;              /* slightly smaller logo on mobile */
   }
 }
+/* Centers the whole form section vertically */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;   /* centers vertically */
+  min-height: 100vh;         /* full screen height */
+  padding-top: 40px;         /* slight breathing space */
+  padding-bottom: 60px;      /* space below */
+  box-sizing: border-box;    /* ensures padding doesn't overflow */
+  gap: 40px; 
+}
+/* 📱 Mobile layout adjustments */
+@media (max-width: 600px) {
+  .form-container {
+    justify-content: flex-start; /* shift content up */
+    padding-top: 30px;           /* smaller top space */
+    min-height: auto;            /* let it fit naturally */
+  }
+
+  #formPage {
+    margin-top: 20px;            /* less gap below intro text */
+  }
+
+  .logo {
+    width: 90px;                 /* slightly smaller logo for mobile */
+  }
+
+  .intro-text {
+    font-size: 0.75rem;
+    line-height: 1.3;
+    max-width: 90%;
+    margin: 0 auto 15px auto;
+  }
+}
+
 
   </style>
 </head>
@@ -218,12 +268,12 @@
 <body>
   <!-- Form Page -->
  <div class="intro-container">
+ <div class="form-container">
   <img src="logo.png" alt="Celebrate a Sale Logo" class="logo" id="mainLogo">
   <div class="intro-text">
     We want all salespeople to feel the love for an amazing deal. Even if you work remote.
     Generate a celebration-link and bomb your colleagues with your greatness.
   </div>
-</div>
 
   <div id="formPage" class="card">
     <label>👤 Salesperson:</label>
