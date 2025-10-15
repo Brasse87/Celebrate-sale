@@ -261,6 +261,14 @@
   }
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+video, #summaryText {
+  animation: fadeIn 1.5s ease-in-out;
+}
 
   </style>
 </head>
@@ -286,13 +294,6 @@
     <input id="amount" type="text" placeholder="e.g., 150000 or 150k">
     <div class="tip">Tip: Enter the currency or unit of the deal in the Amount field.</div>
 
-    <label>📈 Deal Size:</label>
-    <select id="dealSize">
-      <option value="small">Small Potatos</option>
-      <option value="big">BIG Potatos</option>
-      <option value="huge">The Huge Whale</option>
-    </select>
-
     <button class="btn" onclick="generateLink()">🎉 Celebrate!
       <span>(generate link + copy link)</span>
     </button>
@@ -312,6 +313,12 @@
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script>
+  // 🧭 Quick error catcher – helps find silent JavaScript errors
+window.onerror = function(msg, url, line, col, error) {
+  alert("⚠️ JavaScript error:\n\n" + msg + "\nLine: " + line);
+  return false;
+};
+
   const formPage = document.getElementById("formPage");
   const resultPage = document.getElementById("resultPage");
   const videoEl = document.getElementById("celebrationVideo");
@@ -321,20 +328,22 @@
   const mainLogo = document.getElementById("mainLogo");
   let music = null;
 
-  function generateLink() {
-    const salesperson = document.getElementById("salesperson").value.trim();
-    const customer = document.getElementById("customer").value.trim();
-    const amount = document.getElementById("amount").value.trim();
-    const dealSize = document.getElementById("dealSize").value;
+ function generateLink() {
+  const salesperson = document.getElementById("salesperson").value.trim();
+  const customer = document.getElementById("customer").value.trim();
+  const amount = document.getElementById("amount").value.trim();
 
-    const params = new URLSearchParams({ salesperson, customer, amount, dealSize });
-    const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-    shareLink.value = url;
+  const randomDeal = ["small", "big", "huge", "party", "victory"][Math.floor(Math.random() * 5)];
 
-    shareLink.select();
-    document.execCommand("copy");
-    alert("Link generated and copied!");
-  }
+  const params = new URLSearchParams({ salesperson, customer, amount, dealSize: randomDeal });
+  const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+  shareLink.value = url;
+
+  shareLink.select();
+  document.execCommand("copy");
+  alert("Link generated and copied!");
+}
+
 
   function openCelebration() {
     const link = shareLink.value.trim();
@@ -352,22 +361,51 @@
     let musicFile = "";
     let dealWord = "";
 
+    videoEl.style.opacity = 0;
+    summaryText.style.opacity = 0;
+
+
     if (dealSize === "small") {
-      videoFile = "small.mp4";
-      musicFile = "big.mp3";
-      dealWord = "nice";
-    } else if (dealSize === "big") {
-      videoFile = "big.mp4";
-      musicFile = "big.mp3";
-      dealWord = "big";
-    } else {
-      videoFile = "huge.mp4";
-      musicFile = "huge.mp3";
-      dealWord = "huge";
-    }
+  videoFile = "small.mp4";
+  musicFile = "big.mp3";
+  dealWord = "nice";
+} else if (dealSize === "big") {
+  videoFile = "big.mp4";
+  musicFile = "big.mp3";
+  dealWord = "big";
+} else if (dealSize === "huge") {
+  videoFile = "huge.mp4";
+  musicFile = "huge.mp3";
+  dealWord = "huge";
+} else if (dealSize === "party") {
+  videoFile = "party.mp4";
+  musicFile = "big.mp3";
+  dealWord = "wild";
+} else if (dealSize === "victory") {
+  videoFile = "victory.mp4";
+  musicFile = "huge.mp3";
+  dealWord = "epic";
+}
+
 
     videoEl.src = videoFile;
-    summaryText.textContent = `Our genius salesman ${salesperson} just closed a ${dealWord} deal with ${customer} worth ${amount}.`;
+    setTimeout(() => {
+    videoEl.style.opacity = 1;
+    videoEl.play();
+}, 300);
+
+const phrases = [
+  `Our genius salesman ${salesperson} just pulled off a ${dealWord} deal with ${customer} worth ${amount}.`,
+  `${salesperson} did it again! ${dealWord.toUpperCase()} deal closed with ${customer} for ${amount}!`,
+  `Huge shoutout to ${salesperson} — ${customer} just joined the closed list with a ${dealWord} deal worth ${amount}.`
+];
+summaryText.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+
+
+setTimeout(() => {
+  summaryText.style.opacity = 1;
+}, 800);
+
 
     if (music) {
       music.pause();
