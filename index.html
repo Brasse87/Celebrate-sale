@@ -455,8 +455,8 @@ setTimeout(() => {
       document.body.addEventListener('click', () => music.play(), { once: true });
     });
 
-    const end = Date.now() + 4500;
-    const confettiCount = dealSize === "huge" ? 10 : 10;
+    const end = Date.now() + 5500;
+    const confettiCount = dealSize === "huge" ? 5 : 5;
     (function frame() {
       const timeLeft = end - Date.now();
       if (timeLeft <= 0) return;
