@@ -403,27 +403,26 @@ window.onerror = function(msg, url, line, col, error) {
     summaryText.style.opacity = 0;
 
 
-    if (dealSize === "small") {
+  if (dealSize === "small") {
   videoFile = "small.mp4";
-  musicFile = "big.mp3";
   dealWord = "nice";
 } else if (dealSize === "big") {
   videoFile = "big.mp4";
-  musicFile = "big.mp3";
   dealWord = "big";
 } else if (dealSize === "huge") {
   videoFile = "huge.mp4";
-  musicFile = "huge.mp3";
   dealWord = "huge";
 } else if (dealSize === "party") {
   videoFile = "party.mp4";
-  musicFile = "big.mp3";
   dealWord = "wild";
 } else if (dealSize === "victory") {
   videoFile = "victory.mp4";
-  musicFile = "huge.mp3";
   dealWord = "epic";
 }
+
+// 🟡 Use the same music file for all deals
+musicFile = "huge.mp3";
+
 
 
     videoEl.src = videoFile;
@@ -456,8 +455,8 @@ setTimeout(() => {
       document.body.addEventListener('click', () => music.play(), { once: true });
     });
 
-    const end = Date.now() + 2500;
-    const confettiCount = dealSize === "huge" ? 30 : 60;
+    const end = Date.now() + 4500;
+    const confettiCount = dealSize === "huge" ? 10 : 10;
     (function frame() {
       const timeLeft = end - Date.now();
       if (timeLeft <= 0) return;
