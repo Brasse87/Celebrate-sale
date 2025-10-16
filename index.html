@@ -20,6 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="favicon.png">
 
+
   <style>
     body {
       font-family: 'Montserrat', sans-serif;
@@ -270,6 +271,41 @@ video, #summaryText {
   animation: fadeIn 1.5s ease-in-out;
 }
 
+/* 🚀 Floating encouragement text */
+.floating-text {
+  opacity: 0;
+  color: gold;
+  font-size: 2.5rem;
+  margin-top: 15px;
+  text-align: center;
+  transition: opacity 1s ease;
+}
+
+
+/* ✨ Fade in, float up, then fade out */
+@keyframes floatUp {
+  0%   { opacity: 0; transform: translateY(20px); }
+  15%  { opacity: 1; transform: translateY(0); }
+  80%  { opacity: 1; transform: translateY(-10px); }
+  100% { opacity: 0; transform: translateY(-20px); }
+}
+
+/* 📱 Mobile layout adjustments for celebration page */
+@media (max-width: 600px) {
+  .floating-text {
+    font-size: 1.2rem;
+    margin-top: 10px;
+  }
+
+  #summaryText {
+    font-size: 1.1rem;
+  }
+
+  video {
+    width: 95%;
+  }
+}
+ 
   </style>
 </head>
 
@@ -308,6 +344,8 @@ video, #summaryText {
     <div id="celebrationTitle">Attention! Deal-alert 🚨</div>
     <video id="celebrationVideo" autoplay muted loop playsinline></video>
     <div id="summaryText"></div>
+    <div class="floating-text">Keep crushing it 🚀</div>
+
     <button id="toggleMusic" onclick="toggleMusic()">🔊 Play Music</button>
   </div>
 
@@ -430,7 +468,32 @@ setTimeout(() => {
       });
       requestAnimationFrame(frame);
     })();
+
+// ✨ Show floating text 5.5 s after confetti starts
+setTimeout(() => {
+  const floatText = document.querySelector(".floating-text");
+  if (floatText) {
+
+    // 🎲 Lista med alternativa texter (lägg till fler om du vill!)
+    const messages = [
+      "Keep crushing it 🚀",
+      "Another win in the books 💼",
+      "Unstoppable energy ⚡",
+      "Deal maker of the year 🥇"
+    ];
+
+    // 🔀 Slumpa fram en text
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+
+    // 💬 Visa den slumpade texten
+    floatText.textContent = randomMessage;
+    floatText.style.animation = "floatUp 6s ease forwards";
+    floatText.style.opacity = 1;
   }
+}, 5500);
+
+
+}
 
   function toggleMusic() {
     if (!music) return;
