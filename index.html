@@ -19,21 +19,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="favicon.png">
+<meta name="description" content="Celebrate a Sale is a fun tool for sales teams to celebrate wins — big or small. Generate your celebration link and share the joy!">
+
 
 
   <style>
     body {
-      font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(135deg, #081216, #14232b, #1c2f3a);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 0;
-      min-height: 100vh;
-      padding: 60px;
-      padding-bottom: 100px;
-    }
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(135deg, #081216, #14232b, #1c2f3a);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  min-height: 100vh;
+  padding: 60px;
+  padding-bottom: 100px;
+  box-sizing: border-box;
+}
+
 
     /* Refined logo styling — tighter gold frame that fits perfectly */
 .logo {
@@ -62,10 +66,6 @@
   text-align: center;
   width: 100%;
 }
-
-}
-
-    }
 
     .intro-text {
       max-width: 400px;
@@ -262,11 +262,6 @@
   }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 video, #summaryText {
   animation: fadeIn 1.5s ease-in-out;
 }
@@ -305,6 +300,64 @@ video, #summaryText {
     width: 95%;
   }
 }
+
+.footer {
+  margin-top: auto;
+  text-align: center;
+  padding: 25px 10px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(8px);
+  width: 100%;
+}
+
+.footer a {
+  color: gold;
+  text-decoration: none;
+  transition: opacity 0.3s;
+}
+
+.footer a:hover {
+  opacity: 0.8;
+}
+
+/* --- Team message --- */
+.team-message {
+  font-size: 1.1rem;
+  margin-top: 10px;
+  color: #fff8c7;
+  opacity: 0;
+  animation: fadeIn 2s ease forwards 2.2s;
+  text-shadow: 0 0 8px rgba(255,215,0,0.3);
+}
+
+/* --- Flygande text och emojis --- */
+.floating-text {
+  margin-top: 30px;
+  color: gold;
+  font-size: 2rem;
+  opacity: 0;
+  text-align: center;
+}
+
+
+.reaction-emoji {
+  position: absolute;
+  font-size: 1.8rem;
+  pointer-events: none;
+  z-index: 5;
+  filter: drop-shadow(0 0 5px gold);
+  transition: transform 0.3s;
+}
+
+.reaction-emoji:nth-child(even) {
+  animation-direction: reverse; /* roterar åt motsatt håll */
+}
+
+
+
  
   </style>
 </head>
@@ -313,6 +366,7 @@ video, #summaryText {
   <!-- Form Page -->
  <div class="intro-container">
  <div class="form-container">
+<h1 style="display:none;">Celebrate a Sale — A fun way to celebrate your team’s wins!</h1>
   <img src="logo.png" alt="Celebrate a Sale Logo" class="logo" id="mainLogo">
   <div class="intro-text">
     We want all salespeople to feel the love for an amazing deal. Even if you work remote.
@@ -329,6 +383,9 @@ video, #summaryText {
     <label>💰 Amount:</label>
     <input id="amount" type="text" placeholder="e.g., 150000 or 150k">
     <div class="tip">Tip: Enter the currency or unit of the deal in the Amount field.</div>
+
+<label>💬 Personal message (optional):</label>
+<input id="message" type="text" placeholder="e.g., Finally, it was a tough one! 🎉">
 
     <button class="btn" onclick="generateLink()">🎉 Celebrate!
       <span>(generate link + copy link)</span>
@@ -348,6 +405,10 @@ video, #summaryText {
 
     <button id="toggleMusic" onclick="toggleMusic()">🔊 Play Music</button>
   </div>
+
+    </div> <!-- /form-container -->
+  </div> <!-- /intro-container -->
+
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script>
@@ -370,10 +431,12 @@ window.onerror = function(msg, url, line, col, error) {
   const salesperson = document.getElementById("salesperson").value.trim();
   const customer = document.getElementById("customer").value.trim();
   const amount = document.getElementById("amount").value.trim();
+  const message = document.getElementById("message").value.trim(); 
 
   const randomDeal = ["small", "big", "huge", "party", "victory"][Math.floor(Math.random() * 5)];
 
-  const params = new URLSearchParams({ salesperson, customer, amount, dealSize: randomDeal });
+  const params = new URLSearchParams({ salesperson, customer, amount, message, dealSize: randomDeal });
+
   const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
   shareLink.value = url;
 
@@ -389,110 +452,168 @@ window.onerror = function(msg, url, line, col, error) {
     else alert("Please generate a link first!");
   }
 
-  function showCelebration(salesperson, customer, amount, dealSize) {
-    formPage.style.display = "none";
-    introText.style.display = "none";
-    mainLogo.style.display = "none"; // 👈 hides top logo
-    resultPage.style.display = "flex";
+ function showCelebration(salesperson, customer, amount, dealSize, message) {
+  formPage.style.display = "none";
+  introText.style.display = "none";
+  mainLogo.style.display = "none";
+  resultPage.style.display = "flex";
 
-    let videoFile = "";
-    let musicFile = "";
-    let dealWord = "";
+  let videoFile = "";
+  let musicFile = "";
+  let dealWord = "";
 
-    videoEl.style.opacity = 0;
-    summaryText.style.opacity = 0;
-
+  videoEl.style.opacity = 0;
+  summaryText.style.opacity = 0;
 
   if (dealSize === "small") {
-  videoFile = "small.mp4";
-  dealWord = "nice";
-} else if (dealSize === "big") {
-  videoFile = "big.mp4";
-  dealWord = "big";
-} else if (dealSize === "huge") {
-  videoFile = "huge.mp4";
-  dealWord = "huge";
-} else if (dealSize === "party") {
-  videoFile = "party.mp4";
-  dealWord = "wild";
-} else if (dealSize === "victory") {
-  videoFile = "victory.mp4";
-  dealWord = "epic";
-}
+    videoFile = "small.mp4";
+    dealWord = "nice";
+  } else if (dealSize === "big") {
+    videoFile = "big.mp4";
+    dealWord = "big";
+  } else if (dealSize === "huge") {
+    videoFile = "huge.mp4";
+    dealWord = "huge";
+  } else if (dealSize === "party") {
+    videoFile = "party.mp4";
+    dealWord = "wild";
+  } else if (dealSize === "victory") {
+    videoFile = "victory.mp4";
+    dealWord = "epic";
+  }
 
-// 🟡 Use the same music file for all deals
-musicFile = "huge.mp3";
-
-
-
-    videoEl.src = videoFile;
-    setTimeout(() => {
+  musicFile = "huge.mp3";
+  videoEl.src = videoFile;
+  setTimeout(() => {
     videoEl.style.opacity = 1;
     videoEl.play();
+  }, 300);
+
+  const phrases = [
+    `Our genius salesman ${salesperson} just pulled off a ${dealWord} deal with ${customer} worth ${amount}.`,
+    `${salesperson} did it again! ${dealWord.toUpperCase()} deal closed with ${customer} for ${amount}!`,
+    `Huge shoutout to ${salesperson} — ${customer} just joined the closed list with a ${dealWord} deal worth ${amount}.`
+  ];
+  summaryText.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+  setTimeout(() => (summaryText.style.opacity = 1), 800);
+
+  // 🆕 Visa team-meddelandet under summaryText men före floating-text
+  if (message) {
+    const msgEl = document.createElement("div");
+    msgEl.className = "team-message";
+    msgEl.textContent = message;
+    resultPage.insertBefore(msgEl, document.querySelector(".floating-text"));
+  }
+
+  // 🎵 Musik + konfetti
+  if (music) {
+    music.pause();
+    music = null;
+  }
+  music = new Audio(musicFile);
+  music.loop = true;
+  music.volume = 0.6;
+  music.play().catch(() => {
+    document.body.addEventListener("click", () => music.play(), { once: true });
+  });
+
+  const end = Date.now() + 5500;
+  const confettiCount = dealSize === "huge" ? 5 : 5;
+  (function frame() {
+    const timeLeft = end - Date.now();
+    if (timeLeft <= 0) return;
+    confetti({
+      particleCount: confettiCount,
+      spread: 70,
+      origin: { x: Math.random(), y: Math.random() - 0.2 }
+    });
+    requestAnimationFrame(frame);
+  })();
+
+  // ✨ Floating text + emoji-timing
+  setTimeout(() => {
+    const floatText = document.querySelector(".floating-text");
+    if (floatText) {
+      const messages = [
+        "Keep crushing it 🚀",
+        "Another win in the books 💼",
+        "Unstoppable energy ⚡",
+        "Deal maker of the year 🥇"
+      ];
+      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+      floatText.textContent = randomMessage;
+      floatText.style.animation = "floatUp 6s ease forwards";
+      floatText.style.opacity = 1;
+    }
+
+    // 🕒 När floating texten börjar tona ut → starta emojisarna
+    setTimeout(() => {
+      startEmojiReactions();
+    }, 5000);
+  }, 5500);
+
+  // 🎉 Funktion för flygande emojis längs sidorna
+  function startEmojiReactions() {
+    const emojiList = ["🔥", "🚀", "💰", "🎉", "👏"];
+    const video = document.getElementById("celebrationVideo");
+    const rect = video.getBoundingClientRect();
+
+    function spawnEmoji(side) {
+  const emoji = document.createElement("div");
+  emoji.textContent = emojiList[Math.floor(Math.random() * emojiList.length)];
+  emoji.className = "reaction-emoji";
+
+  // 🎲 Slumpa storlek (lite variation men inte för mycket)
+  const size = 1.3 + Math.random() * 1;
+  emoji.style.fontSize = `${size}rem`;
+
+  // 🎯 Startposition: precis under videons nederkant
+  const startY = rect.bottom + 10; 
+  const sideOffset = side === "left"
+    ? rect.left + 30 + Math.random() * 40
+    : rect.right - 60 - Math.random() * 40;
+
+  // 📍 Absolut positionering (mer stabil än bottom/top-blandning)
+  emoji.style.position = "fixed";
+  emoji.style.left = `${sideOffset}px`;
+  emoji.style.top = `${startY}px`;
+
+  // 🔄 Slumpa hastighet och sidledsrörelse för mjukare variation
+  const duration = 4000 + Math.random() * 2000; // 4–6 sek
+  const horizontalDrift = side === "left" ? 20 : -20;
+
+  emoji.animate(
+    [
+      { transform: `translate(0, 0) rotate(0deg)`, opacity: 1 },
+      { transform: `translate(${horizontalDrift}px, -450px) rotate(${Math.random() > 0.5 ? 360 : -360}deg)`, opacity: 0 }
+    ],
+    {
+      duration: duration,
+      easing: "ease-in-out",
+      fill: "forwards"
+    }
+  );
+
+  emoji.style.filter = "drop-shadow(0 0 6px gold)";
+  document.body.appendChild(emoji);
+  setTimeout(() => emoji.remove(), duration);
+}
+
+
+   // 🧨 Fler emojis, längre tid på skärmen
+const interval = setInterval(() => {
+  // Spawna flera per “tick”
+  for (let i = 0; i < 3; i++) {
+    spawnEmoji(Math.random() > 0.5 ? "left" : "right");
+  }
 }, 300);
 
-const phrases = [
-  `Our genius salesman ${salesperson} just pulled off a ${dealWord} deal with ${customer} worth ${amount}.`,
-  `${salesperson} did it again! ${dealWord.toUpperCase()} deal closed with ${customer} for ${amount}!`,
-  `Huge shoutout to ${salesperson} — ${customer} just joined the closed list with a ${dealWord} deal worth ${amount}.`
-];
-summaryText.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+// Låt animationen pågå längre
+setTimeout(() => clearInterval(interval), 10000); // visas i ~10 sekunder
 
-
-setTimeout(() => {
-  summaryText.style.opacity = 1;
-}, 800);
-
-
-    if (music) {
-      music.pause();
-      music = null;
-    }
-    music = new Audio(musicFile);
-    music.loop = true;
-    music.volume = 0.6;
-    music.play().catch(() => {
-      document.body.addEventListener('click', () => music.play(), { once: true });
-    });
-
-    const end = Date.now() + 5500;
-    const confettiCount = dealSize === "huge" ? 5 : 5;
-    (function frame() {
-      const timeLeft = end - Date.now();
-      if (timeLeft <= 0) return;
-      confetti({
-        particleCount: confettiCount,
-        spread: 70,
-        origin: { x: Math.random(), y: Math.random() - 0.2 }
-      });
-      requestAnimationFrame(frame);
-    })();
-
-// ✨ Show floating text 5.5 s after confetti starts
-setTimeout(() => {
-  const floatText = document.querySelector(".floating-text");
-  if (floatText) {
-
-    // 🎲 Lista med alternativa texter (lägg till fler om du vill!)
-    const messages = [
-      "Keep crushing it 🚀",
-      "Another win in the books 💼",
-      "Unstoppable energy ⚡",
-      "Deal maker of the year 🥇"
-    ];
-
-    // 🔀 Slumpa fram en text
-    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-
-    // 💬 Visa den slumpade texten
-    floatText.textContent = randomMessage;
-    floatText.style.animation = "floatUp 6s ease forwards";
-    floatText.style.opacity = 1;
   }
-}, 5500);
-
-
 }
+
 
   function toggleMusic() {
     if (!music) return;
@@ -501,19 +622,22 @@ setTimeout(() => {
   }
 
   window.onload = () => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.has("salesperson")) {
-      showCelebration(
-        params.get("salesperson"),
-        params.get("customer"),
-        params.get("amount"),
-        params.get("dealSize")
-      );
-    }
-  };
-</script>
+  const params = new URLSearchParams(window.location.search);
+  if (params.has("salesperson")) {
+    showCelebration(
+      params.get("salesperson"),
+      params.get("customer"),
+      params.get("amount"),
+      params.get("dealSize"),
+      params.get("message") // 👈 skickar med meddelandet
+    );
+  }
+};
 
-    
   </script>
+
+  <footer class="footer">
+    <p>© 2025 Celebrate a Sale 🎉 — Every deal deserves a party.</p>
+  </footer>
 </body>
 </html>
